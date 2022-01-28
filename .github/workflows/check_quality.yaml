@@ -1,0 +1,16 @@
+name: Check air quality
+on: [push]
+ # schedule:
+ #    - cron: '0 5 * * *'
+jobs:
+  Run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Run Python script
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9.2'
+      - run: |
+          python get_sensor_data.py
