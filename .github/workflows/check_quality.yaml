@@ -13,4 +13,5 @@ jobs:
         with:
           python-version: '3.9.2'
       - run: |
+          pip install -r requirements.txt
           python get_sensor_data.py
