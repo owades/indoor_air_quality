@@ -1,9 +1,9 @@
 name: Manage air quality
-on: [push]
- # schedule:
- #    - cron: '*/15 * * * *'
+on:
+ schedule:
+    - cron: '*/15 * * * *'
 jobs:
-  Run-tests:
+  Manage air quality:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
