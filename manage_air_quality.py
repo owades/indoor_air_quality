@@ -5,7 +5,7 @@ import requests
 import os
 
 AQI_CEILING = 50
-REFRESH_INTERVAL_MINS = 15
+REFRESH_INTERVAL_MINS = 5
 REFRESH_INTERVAL_SECS = REFRESH_INTERVAL_MINS * 60
 AQI_URL = "https://www.purpleair.com/json?show="
 PURPLE_AIR_DEVICE_ID = "110112"
@@ -30,7 +30,7 @@ def main(argv):
     aqi = get_aqi()
     if(aqi >= AQI_CEILING):
         print(f'Current AQI of {str(aqi)} is above the acceptable value of {str(AQI_CEILING)}, running fan for {str(REFRESH_INTERVAL_MINS)} min')
-        set_fan_timer(REFRESH_INTERVAL_SECS)
+        set_fan_timer(REFRESH_INTERVAL_SECS * 2)
     else:
         print(f'Current AQI of {str(aqi)} is below the acceptable value of {str(AQI_CEILING)}, will check again in {str(REFRESH_INTERVAL_MINS)} min')
 
