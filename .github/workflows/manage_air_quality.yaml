@@ -3,7 +3,7 @@ on:
  schedule:
     - cron: '*/15 * * * *'
 jobs:
-  Manage air quality:
+  Manage-air-quality:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
