@@ -45,6 +45,7 @@ def set_mode(mode):
     execute_thermostat_command('SetMode', params)
 
 def set_fan_timer(duration_secs):
+    # System must be set to HEAT in order for fan to run - but HEAT mode doesn't it's always blowing warm air. You can just set the heat to a low temp.
     turn_heat_on_if_off()
     params = {'timerMode' : 'ON',
               'duration' : str(duration_secs) + 's'
