@@ -21,3 +21,4 @@ jobs:
           NEST_GCP_CLIENT_SECRET: ${{secrets.NEST_GCP_CLIENT_SECRET}}
           NEST_GCP_REFRESH_TOKEN: ${{secrets.NEST_GCP_REFRESH_TOKEN}}
           NEST_GCP_CLIENT_ID: ${{secrets.NEST_GCP_CLIENT_ID}}
+          PURPLE_AIR_DEVICE_ID: ${{secrets.PURPLE_AIR_DEVICE_ID}}
