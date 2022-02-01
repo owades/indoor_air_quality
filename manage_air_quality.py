@@ -29,7 +29,7 @@ HEADERS = { 'Content-Type' : 'application/json',
 def main(argv):
     aqi = get_aqi()
     if(aqi >= AQI_CEILING):
-        print(f'Current AQI of {str(aqi)} is above the acceptable value of {str(AQI_CEILING)}, running fan for {str(REFRESH_INTERVAL_MINS)} min')
+        print(f'Current AQI of {str(aqi)} is above the acceptable value of {str(AQI_CEILING)}, running fan for {str(REFRESH_INTERVAL_MINS * 2)} min')
         set_fan_timer(REFRESH_INTERVAL_SECS * 2)
     else:
         print(f'Current AQI of {str(aqi)} is below the acceptable value of {str(AQI_CEILING)}, will check again in {str(REFRESH_INTERVAL_MINS)} min')
