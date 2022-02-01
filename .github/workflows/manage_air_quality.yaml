@@ -1,20 +1,25 @@
 name: Manage air quality
-on:
- schedule:
-    - cron: '*/5 * * * *'
+on: [push]
+ # schedule:
+ #    - cron: '*/5 * * * *'
 jobs:
   Manage-air-quality:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - name: Run Python script
+      - name: Setup python
         uses: actions/setup-python@v2
         with:
           python-version: '3.9.2'
-      - run: |
-          pip install -r requirements.txt
-          python manage_air_quality.py
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ hashFiles('manage_air_quality.py') }}-${{ hashFiles('requirements.txt') }}
+      - name: Setup python requirements
+        run: pip install -r requirements.txt
+      - name: Run script
+        run: python manage_air_quality.py
         env:
           NEST_GCP_PROJECT_ID: ${{secrets.NEST_GCP_PROJECT_ID}}
           NEST_GCP_DEVICE_ID: ${{secrets.NEST_GCP_DEVICE_ID}}
