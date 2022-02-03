@@ -18,28 +18,31 @@ class nest_thermostat:
     def __init__(self, access_token, project_id, device_id):
         self.access_token = access_token
         self.request_headers = { 'Content-Type' : 'application/json',
-                        'Authorization' : 'Bearer ' + access_token
-                        }
+                                'Authorization' : 'Bearer ' + access_token
+                            }
         self.endpoint = f'https://smartdevicemanagement.googleapis.com/v1/enterprises/{project_id}/devices/{device_id}'
 
-    def set_mode(mode):
+    def set_mode(self, mode):
         params = {'mode' : mode}
-        self.execute_thermostat_command('SetMode', params)
+        self.execute_thermostat_command('ThermostatMode.SetMode', params)
 
-    def set_fan_timer(duration_secs):
+    def set_fan_timer(self, duration_mins):
         # System must be set to HEAT in order for fan to run - but HEAT mode doesn't it's always blowing warm air. You can just set the heat to a low temp.
         self.set_mode('HEAT')
         params = {'timerMode' : 'ON',
-                  'duration' : str(duration_secs) + 's'
+                  'duration' : str(duration_mins * 60) + 's'
                 }
-        self.execute_thermostat_command('SetTimer', params)
+        self.execute_thermostat_command('Fan.SetTimer', params)
 
-    def execute_thermostat_command(command, params):
+    def execute_thermostat_command(self, command, params):
         post_url = self.endpoint + ':executeCommand'
-        message = {'command': f'sdm.devices.commands.Fan.{command}',
+        message = {'command': f'sdm.devices.commands.{command}',
                     'params': params
                     }
-        response = requests.post(post_url, request_headers=self.request_headers, json=message)
+        response = requests.post(post_url, headers=self.request_headers, json=message)
+        if response.status_code != 200:
+            print(f' * error: {command} failed with status code {response.status_code}')
+            exit(1)
 
     def check_mode():
         response = requests.get(self.endpoint, request_headers=self.request_headers)
@@ -55,13 +58,13 @@ def get_google_access_token():
     return access_token
 
 class air_quality_manager:
-    def __init__(self, aqi_sensor, thermostat, AQI_CEILING, FAN_RUNTIME_MINS):
+    def __init__(self, aqi_sensor, thermostat, aqi_ceiling, fan_runtime_mins):
         aqi = aqi_sensor.get_aqi()
-        if(aqi >= AQI_CEILING):
-            print(f'Current AQI of {str(aqi)} is above the acceptable value of {str(AQI_CEILING)}, running fan for {str(FAN_RUNTIME_MINS)} min')
-            thermostat.set_fan_timer(FAN_RUNTIME_MINS * 60)
+        if(aqi >= aqi_ceiling):
+            print(f'Current AQI of {str(aqi)} is above the acceptable value of {str(aqi_ceiling)}, running fan for {str(fan_runtime_mins)} min')
+            thermostat.set_fan_timer(fan_runtime_mins)
         else:
-            print(f'Current AQI of {str(aqi)} is below the acceptable value of {str(AQI_CEILING)}')
+            print(f'Current AQI of {str(aqi)} is below the acceptable value of {str(aqi_ceiling)}')
 
 def main(argv):
     aqi_sensor = purple_air_sensor(os.environ['PURPLE_AIR_DEVICE_ID'])
