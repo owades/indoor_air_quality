@@ -16,7 +16,7 @@ jobs:
       - name: Setup python requirements
         run: pip install -r requirements.txt
       - name: Run script
-        run: python manage_air_quality.py
+        run: python manage_air_quality.py --a 50 --f 15
         env:
           NEST_GCP_PROJECT_ID: ${{secrets.NEST_GCP_PROJECT_ID}}
           NEST_GCP_DEVICE_ID: ${{secrets.NEST_GCP_DEVICE_ID}}
