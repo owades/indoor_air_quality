@@ -4,7 +4,7 @@ on:
     - cron: '*/5 * * * *'
 jobs:
   Manage-air-quality:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
