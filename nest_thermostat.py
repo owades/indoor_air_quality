@@ -21,18 +21,6 @@ class thermostat:
         access_token = response.json()["access_token"]
         return access_token
 
-    def set_mode(self, mode):
-        params = {'mode' : mode}
-        self.execute_thermostat_command('ThermostatMode.SetMode', params)
-
-    def set_fan_timer(self, duration_mins):
-        # System must be set to HEAT in order for fan to run - but HEAT mode doesn't it's always blowing warm air. You can just set the heat to a low temp.
-        self.set_mode('HEAT')
-        params = {'timerMode' : 'ON',
-                  'duration' : str(duration_mins * 60) + 's'
-                }
-        self.execute_thermostat_command('Fan.SetTimer', params)
-
     def execute_thermostat_command(self, command, params):
         post_url = self.endpoint + ':executeCommand'
         message = {'command': f'sdm.devices.commands.{command}',
@@ -42,6 +30,20 @@ class thermostat:
         if response.status_code != 200:
             print(f' * error: {command} failed with status code {response.status_code}')
             exit(1)
+
+    def set_mode(self, mode):
+        params = {'mode' : mode}
+        self.execute_thermostat_command('ThermostatMode.SetMode', params)
+
+    def set_fan_timer(self, duration_mins):
+        # System must be set to HEAT in order for fan to run - but HEAT mode doesn't it's always blowing warm air. You can just set the heat to a low temp.
+        # Omitting the below line so that the fan will not turn on if it's been manually set to off.
+        # self.set_mode('HEAT')
+
+        params = {'timerMode' : 'ON',
+                  'duration' : str(duration_mins * 60) + 's'
+                }
+        self.execute_thermostat_command('Fan.SetTimer', params)
 
     def check_mode():
         response = requests.get(self.endpoint, request_headers=self.request_headers)
