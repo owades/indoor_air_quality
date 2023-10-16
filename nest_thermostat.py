@@ -35,16 +35,28 @@ class thermostat:
         params = {'mode' : mode}
         self.execute_thermostat_command('ThermostatMode.SetMode', params)
 
+    def check_mode(self):
+        response = requests.get(self.endpoint, headers=self.request_headers)
+        return response.json()['traits']['sdm.devices.traits.ThermostatMode']['mode']
+
     def set_fan_timer(self, duration_mins):
         # System must be set to HEAT in order for fan to run - but HEAT mode doesn't it's always blowing warm air. You can just set the heat to a low temp.
-        # Omitting the below line so that the fan will not turn on if it's been manually set to off.
+        
+        # If you want to prevent the fan from running when the heat is set to off, comment out the below line
         # self.set_mode('HEAT')
 
         params = {'timerMode' : 'ON',
                   'duration' : str(duration_mins * 60) + 's'
                 }
-        self.execute_thermostat_command('Fan.SetTimer', params)
+        
+        current_mode = self.check_mode() 
 
-    def check_mode():
-        response = requests.get(self.endpoint, request_headers=self.request_headers)
-        return response.json()['traits']['sdm.devices.traits.ThermostatMode']['mode']
+        # Heat must be on in order for fan to run.
+        # You can set the heat to turn on with self.set_mode('HEAT')...
+        # ...but leaving it like this creates a manual override, since anyone can disable the script by setting heat to OFF)
+        if current_mode == "HEAT":
+            self.execute_thermostat_command('Fan.SetTimer', params)
+        else:
+            print(f'Heat is set to {current_mode}, doing nothing')
+
+    
