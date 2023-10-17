@@ -42,9 +42,6 @@ class thermostat:
     def set_fan_timer(self, duration_mins):
         # System must be set to HEAT in order for fan to run - but HEAT mode doesn't it's always blowing warm air. You can just set the heat to a low temp.
         
-        # If you want to prevent the fan from running when the heat is set to off, comment out the below line
-        # self.set_mode('HEAT')
-
         params = {'timerMode' : 'ON',
                   'duration' : str(duration_mins * 60) + 's'
                 }

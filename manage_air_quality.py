@@ -2,8 +2,17 @@ import argparse
 
 import purple_air_sensor as aqisensor
 import nest_thermostat as thermo_stat
+import datetime
 
 def manage_air_quality(aqi_sensor, thermostat, aqi_ceiling, fan_runtime_mins):
+    
+    current_hour = datetime.datetime.now().hour
+    heat_off = thermostat.check_mode() == 'OFF'
+
+    # If the heat is off at the end of the day, it automatically turns on the next day. This usecase is fairly specific.
+    if heat_off and current_hour <= 7:
+        thermostat.set_mode('HEAT')
+
     aqi = aqi_sensor.get_aqi()
     if(aqi >= aqi_ceiling):
         print(f'Current AQI of {str(aqi)} is bad! It is above the maximum acceptable AQI of {str(aqi_ceiling)}...running fan for {str(fan_runtime_mins)} min')
