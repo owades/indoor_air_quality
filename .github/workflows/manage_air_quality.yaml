@@ -1,5 +1,6 @@
 name: Manage air quality
 on:
+ push:
  schedule:
     - cron: '*/5 * * * *'
 jobs:
