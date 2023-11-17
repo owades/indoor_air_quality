@@ -7,11 +7,12 @@ import datetime
 def manage_air_quality(aqi_sensor, thermostat, aqi_ceiling, fan_runtime_mins):
     
     current_hour = datetime.datetime.now().hour
+    print(f'The current hour is {str(current_hour)}')
     heat_off = thermostat.check_mode() == 'OFF'
 
     # If the heat is off at the end of the day, it automatically turns on the next day. This usecase is fairly specific.
     if heat_off and current_hour <= 7:
-        print("Heat is set to OFF, turning heat on...")
+        print(f'Heat is set to OFF, turning heat on...')
         thermostat.set_mode('HEAT')
 
     aqi = aqi_sensor.get_aqi()
