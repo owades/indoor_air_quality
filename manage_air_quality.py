@@ -25,8 +25,6 @@ def main():
 
     aqi_sensor = aqisensor.sensor()
     thermostat = thermo_stat.thermostat()
-    thermostat.check_mode()
-    thermostat.set_fan_timer(fan_runtime_mins)
     manage_air_quality(aqi_sensor, thermostat, aqi_ceiling, fan_runtime_mins)
 
 if __name__ == '__main__':

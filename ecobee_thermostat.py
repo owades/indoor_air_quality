@@ -61,6 +61,6 @@ class thermostat:
             }]
         }  
         response = self.execute_thermostat_command(selection)
-        print(response)
+        
 
     
