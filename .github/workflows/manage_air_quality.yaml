@@ -23,6 +23,9 @@ jobs:
           NEST_GCP_DEVICE_ID: ${{secrets.NEST_GCP_DEVICE_ID}}
           NEST_GCP_CLIENT_SECRET: ${{secrets.NEST_GCP_CLIENT_SECRET}}
           NEST_GCP_REFRESH_TOKEN: ${{secrets.NEST_GCP_REFRESH_TOKEN}}
+          ECOBEE_API_KEY: ${{secrets.ECOBEE_API_KEY}}
+          ECOBEE_AUTH_CODE: ${{secrets.ECOBEE_AUTH_CODE}}
+          ECOBEE_REFRESH_TOKEN: ${{secrets.ECOBEE_REFRESH_TOKEN}}
           NEST_GCP_CLIENT_ID: ${{secrets.NEST_GCP_CLIENT_ID}}
           PURPLE_AIR_DEVICE_ID: ${{secrets.PURPLE_AIR_DEVICE_ID}}
           PURPLE_AIR_READ_API_KEY: ${{secrets.PURPLE_AIR_READ_API_KEY}}
