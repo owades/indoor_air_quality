@@ -17,7 +17,7 @@ jobs:
       - name: Setup python requirements
         run: pip install -r requirements.txt
       - name: Run script
-        run: python manage_air_quality.py --a 50 --f 15
+        run: python manage_air_quality.py --a 50 --f 60
         env:
           ECOBEE_API_KEY: ${{secrets.ECOBEE_API_KEY}}
           ECOBEE_AUTH_CODE: ${{secrets.ECOBEE_AUTH_CODE}}
